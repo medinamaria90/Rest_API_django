@@ -1,3 +1,4 @@
+<b>WHAT IT DOES</b>
 This is app that works with a Django REST API that helps doing the following things:
 
 - Add a github user to our DataBase (if the user exist) --> localhost/post/ ---> {"username":"medinamaria90", "post_type":"saveUser"}
@@ -16,3 +17,7 @@ This is app that works with a Django REST API that helps doing the following thi
 
 - --> To test POSTS (changes in our database) go to the localhost/post
 - --> To test the GETS, first make some posts, and then, try localhost/?username=medinamaria90 or localhost/repos/?username=medinamaria90
+
+<b>WHAT IT USES</b>
+- SQL lite
+- Django / Django Rest
