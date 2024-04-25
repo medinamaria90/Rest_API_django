@@ -10,17 +10,16 @@ from .models import GithubUser, GithubRepositories
 from .serializer import GetSerializer, UserSerializer, GetRepoSerializer
 import os
 
+#Add your own access token
 access_token = os.getenv('GITHUB_ACCESS_TOKEN')
-
 
 def user_found_msj(user):
     return (f"User {user.username} has been found and saved in the DB")
 
-
+#Check if there is any user in github with "username" as username. If there is one, it returns a model object with the user info.
 def look_for_user_in_github(username):
     github_object = GitHubAPI(access_token)
     user_info = github_object.get_user_info(username)
-    print(user_info)
     if user_info:
         return GithubUser(
             username=user_info["login"],
@@ -29,7 +28,7 @@ def look_for_user_in_github(username):
             public_repos=user_info["public_repos"],
         )
 
-
+#Check if there is any repo in github with for an user with "username" as username. If there is at least one, it saves them it in the DB.
 def look_for_repos_in_github(username):
     github_object = GitHubAPI(access_token)
     user_repos = github_object.get_user_repos(username)
@@ -43,11 +42,10 @@ def look_for_repos_in_github(username):
         user_object.save()
       return True
     except Exception as e:
-        print(f"Error updating user record: {e}")
         return False
     return (False)
 
-
+#This is the view/API for gettin the username info
 @api_view(['GET'])
 def getData(request):
     username = request.query_params.get('username')
@@ -62,20 +60,20 @@ def getData(request):
     except Exception as e:
         return Response({'error': f"An error occurred: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+#This is the view/API for gettin the user repos info
 @api_view(['GET'])
 def getReposData(request):
     username = request.query_params.get('username')
-    print(f"Username received: {username}")  # Log the received username
     if not username:
         return Response({'error': 'Missing username in query parameters'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         repos = GithubRepositories.objects.filter(repo_user=username).all()
-        print(repos.count())
         repo_serializer = GetRepoSerializer(repos, many=True)  # Set many=True to serialize multiple objects
         return Response(repo_serializer.data)
     except Exception as e:
         return Response({'error': f"An error occurred: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+#This is the view/API for posting, and manage 4 different things. saveUser, deleteUser, saveRepos, deleteRepos.
 @api_view(['POST'])
 def postData(request):
     post_type = request.data.get('post_type')
@@ -124,7 +122,6 @@ def postData(request):
             if user_count == 0:
                 return Response({'error': 'User not found in the database'}, status=status.HTTP_404_NOT_FOUND)
             user_repos = look_for_repos_in_github(username)
-            print("got the repos!")
             if user_repos == True:
                 return Response({'message': f"Repos saved in the DB."}, status=status.HTTP_200_OK)
             if user_repos == False:
