@@ -1,4 +1,5 @@
 This is app that works with a Django REST API that helps doing the following things:
+
 - Add a github user to our DataBase (if the user exist) --> localhost/post/ ---> {"username":"medinamaria90", "post_type":"saveUser"}
 - Delete an user from our Database --> localhost/post/ --> {"username":"medinamaria90", "post_type":"deleteUser"}
 - Add a copy of the repos names and links of an user already included in our DataBase, in other table (Only works if the user has been added before). localhost/post/ --> {"username":"medinamaria90", "post_type":"saveRepos"}
@@ -6,7 +7,7 @@ This is app that works with a Django REST API that helps doing the following thi
 - Get the info of an user --> localhost/?username=medinamaria90
 - Get the repos of an user--> localhost/repos/?username=medinamaria90
 
-HOW TO USE
+<b>HOW TO USE</b>
 
 - Clone the repository
 - Install the requirements.txt (pip install -r requirements.txt)
