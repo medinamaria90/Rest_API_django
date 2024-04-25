@@ -1,4 +1,5 @@
 <b>WHAT IT DOES</b>
+<br>
 This is very simple app that works with a Django REST API, and has the following functionality:
 
 - Add a github user to our DataBase (if the user exist) --> localhost/post/ ---> {"username":"medinamaria90", "post_type":"saveUser"}
