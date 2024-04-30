@@ -51,11 +51,3 @@
         <li>SQLite</li>
         <li>Django / Django Rest Framework</li>
 </ul>
-
-
-
-
-<b>WHAT IT USES</b>
-- Django / Django Rest Framework
-- SQL lite
-
