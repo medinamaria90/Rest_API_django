@@ -91,8 +91,7 @@ def save_repos(request):
 
 
 @api_view(['DELETE'])
-def delete_user(request):
-    username = request.data.get('username')
+def delete_user(request, username):
     if not username:
         return Response({'error': 'Missing username or post_type in request data'}, status=status.HTTP_400_BAD_REQUEST)
     try:
