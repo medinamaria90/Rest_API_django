@@ -8,10 +8,12 @@ import json
 from .github_api import GitHubAPI
 from .models import GithubUser, GithubRepositories
 from .serializer import GetSerializer, UserSerializer, GetRepoSerializer
+from dotenv import load_dotenv
 import os
 
 # Add your own access token
-access_token = ""
+load_dotenv()
+access_token = os.getenv("GITHUB_ACCESS_TOKEN")
 github_object = GitHubAPI(access_token)
 
 # This is the view/API for gettin the username info
@@ -47,7 +49,7 @@ def get_repos(request, username):
 def save_user(request):
     username = request.data.get('username')
     if not username:
-        return Response({'error': 'Missing username or post_type in request data'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Missing username'}, status=status.HTTP_400_BAD_REQUEST)
     user = GithubUser.objects.filter(username=username)
     if user:
         print(user)
@@ -70,7 +72,7 @@ def save_user(request):
 def save_repos(request):
     username = request.data.get('username')
     if not username:
-        return Response({'error': 'Missing username or post_type in request data'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Missing username'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         user = GithubUser.objects.filter(username=username)
         if user == False:
@@ -93,7 +95,7 @@ def save_repos(request):
 @api_view(['DELETE'])
 def delete_user(request, username):
     if not username:
-        return Response({'error': 'Missing username or post_type in request data'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Missing username'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         user_count = GithubUser.objects.filter(username=username).count()
         if user_count == 0:
